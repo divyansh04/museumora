@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "195762915020",
+    "project_id": "museumora-e05b8",
+    "storage_bucket": "museumora-e05b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195762915020:android:12c320566f92132f9e2469",
+        "android_client_info": {
+          "package_name": "com.example.museumora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195762915020-h7a93gqpksjbksg7c7p0fdjekiljhukb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.museumora",
+            "certificate_hash": "ab06fb2ee81a2a8400f32f81f0f04a65b4ffcd1f"
+          }
+        },
+        {
+          "client_id": "195762915020-t9dhc5gna0ai5e15hadnqle1c9mqmidi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD9Qq_xTu4zMBksS3xEAgFJ_2b9PaHHc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195762915020-t9dhc5gna0ai5e15hadnqle1c9mqmidi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
