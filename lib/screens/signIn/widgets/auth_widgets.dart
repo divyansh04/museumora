@@ -362,38 +362,6 @@ class _SignUpFormState extends State<SignUpForm> {
                       },
                     ),
                   ),
-                  SizedBox(height: 6),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            labelText: 'Mobile Number',
-                            labelStyle: TextStyle(
-                                color: Color(0xff7E7E7E), fontSize: 13),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xff7E7E7E))),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xFF0057AD))),
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) return 'Please fill this field';
-                            return null;
-                          },
-                          onSaved: (val) {
-                            _phone = val;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -416,7 +384,6 @@ class _SignUpFormState extends State<SignUpForm> {
                               .add(SignUpByEmail(
                             _name.trim(),
                             _email.trim(),
-                            _phoneCode + _phone.trim(),
                           ));
                         }
                       },

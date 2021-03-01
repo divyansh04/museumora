@@ -19,8 +19,7 @@ void main() async {
   // FirebaseFirestore.instance.settings.persistenceEnabled = true;
   //check for user currently logged in
   await use.get<UserService>().getAuthUser();
-  if (use.get<UserService>().getUser() != null &&
-      (!use.get<UserService>().hasNumber || !use.get<UserService>().hasEmail)) {
+  if (use.get<UserService>().getUser() != null && !use.get<UserService>().hasEmail) {
     await use.get<UserService>().logoutUser();
   }
   runApp(MyApp());
