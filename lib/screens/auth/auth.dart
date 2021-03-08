@@ -1,11 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lit_firebase_auth/lit_firebase_auth.dart';
 import 'package:museumora/config/palette.dart';
 import 'package:museumora/screens/auth/widgets/sign_in.dart';
 
-import '../home.dart';
 import 'widgets/background_painter.dart';
 import 'widgets/register.dart';
 import 'package:museumora/screens/dashboard/dashboard.dart';
@@ -43,19 +41,21 @@ class _AuthScreenState extends State<AuthScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LitAuth.custom(
-        errorNotification: const NotificationConfig(
-          backgroundColor: Palette.darkBlue,
-          icon: Icon(
-            Icons.error_outline,
-            color: Colors.deepOrange,
-            size: 32,
-          ),
-        ),
-        onAuthSuccess: () {
-          Navigator.of(context).pushReplacement(Dashboard.route);
-        },
-        child: Stack(
+      body: 
+      // LitAuth.custom(
+        // errorNotification: const NotificationConfig(
+        //   backgroundColor: Palette.darkBlue,
+        //   icon: Icon(
+        //     Icons.error_outline,
+        //     color: Colors.deepOrange,
+        //     size: 32,
+        //   ),
+        // ),
+        // onAuthSuccess: () {
+          // #TODO: authentication success flow
+        //   Navigator.of(context).pushReplacement(Dashboard.route);
+        // },
+         Stack(
           children: [
             SizedBox.expand(
               child: CustomPaint(
@@ -88,7 +88,9 @@ class _AuthScreenState extends State<AuthScreen>
                             ? SignIn(
                                 key: const ValueKey('SignIn'),
                                 onRegisterClicked: () {
-                                  context.resetSignInForm();
+                                  // #TODO: onTap setState
+
+                                  // context.resetSignInForm();
                                   showSignInPage.value = false;
                                   _controller.forward();
                                 },
@@ -96,7 +98,8 @@ class _AuthScreenState extends State<AuthScreen>
                             : Register(
                                 key: const ValueKey('Register'),
                                 onSignInPressed: () {
-                                  context.resetSignInForm();
+                                  // #TODO: onTap setState
+                                  // context.resetSignInForm();
                                   showSignInPage.value = true;
                                   _controller.reverse();
                                 },
@@ -109,7 +112,6 @@ class _AuthScreenState extends State<AuthScreen>
             )
           ],
         ),
-      ),
     );
   }
 }

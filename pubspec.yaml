@@ -23,7 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  lit_firebase_auth:
 
   flutter_bloc: ^6.0.1
   dio: any

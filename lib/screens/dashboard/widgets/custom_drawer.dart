@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:museumora/constants.dart';
-import 'package:lit_firebase_auth/lit_firebase_auth.dart';
 
 import 'package:museumora/screens/auth/auth.dart';
 
@@ -183,7 +182,7 @@ class MyDrawer extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: ListTile(
                   onTap: () {
-                    context.signOut();
+                    // #TODO logout 
                     Navigator.of(context).push(AuthScreen.route);
                   },
                   leading: Icon(Icons.logout),

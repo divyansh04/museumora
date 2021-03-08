@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lit_firebase_auth/lit_firebase_auth.dart';
 
 import 'decoration_functions.dart';
 import 'sign_in_up_bar.dart';
@@ -12,8 +11,11 @@ class Register extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSubmitting = context.isSubmitting();
-    return SignInForm(
+    // #TODO subitted indicator configuration provider
+    // final isSubmitting = context.isSubmitting();
+    // #TODO at end check for bugs in Form
+    // #TODO validators in check
+    return Form(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
@@ -34,7 +36,7 @@ class Register extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: EmailTextFormField(
+                    child: TextFormField(
                         style: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -43,7 +45,7 @@ class Register extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: PasswordTextFormField(
+                    child: TextFormField(
                       style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,
@@ -53,9 +55,11 @@ class Register extends StatelessWidget {
                   ),
                   SignUpBar(
                     label: 'Sign up',
-                    isLoading: isSubmitting,
+                    // #TODO subitted indicator configuration provider
+                    isLoading: true, //isSubmitting,
                     onPressed: () {
-                      context.registerWithEmailAndPassword();
+                      // TODO: sign up on pressed
+                      // context.registerWithEmailAndPassword();
                     },
                   ),
                   Align(

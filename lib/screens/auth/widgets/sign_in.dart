@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lit_firebase_auth/lit_firebase_auth.dart';
 
 import 'decoration_functions.dart';
 import 'provider_button.dart';
@@ -16,8 +15,9 @@ class SignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSubmitting = context.isSubmitting();
-    return SignInForm(
+    // final isSubmitting = context.isSubmitting();
+    // #TODO Same a register.dart
+    return Form(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
@@ -37,21 +37,21 @@ class SignIn extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: EmailTextFormField(
+                    child: TextFormField(
                       decoration: signInInputDecoration(hintText: 'Email'),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: PasswordTextFormField(
+                    child: TextFormField(
                       decoration: signInInputDecoration(hintText: 'Password'),
                     ),
                   ),
                   SignInBar(
                     label: 'Sign in',
-                    isLoading: isSubmitting,
+                    isLoading: true, // isSubmitting,
                     onPressed: () {
-                      context.signInWithEmailAndPassword();
+                      // context.signInWithEmailAndPassword();
                     },
                   ),
                 ],
