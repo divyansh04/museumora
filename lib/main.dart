@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:museumora/screens/dashboard/dashboard.dart';
+import 'package:museumora/screens/virtual_tour/core/floorplan_model.dart';
 import 'package:museumora/services/serviceLocator.dart';
+import 'package:provider/provider.dart';
 
 import 'config/palette.dart';
 import 'screens/splash.dart';
@@ -31,23 +33,29 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Material App',
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: GoogleFonts.muliTextTheme(),
-        accentColor: Palette.darkOrange,
-        appBarTheme: const AppBarTheme(
-          brightness: Brightness.dark,
-          color: Palette.darkBlue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<FloorPlanModel>(
+            create: (context) => FloorPlanModel()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Material App',
+        theme: ThemeData(
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: GoogleFonts.muliTextTheme(),
+          accentColor: Palette.darkOrange,
+          appBarTheme: const AppBarTheme(
+            brightness: Brightness.dark,
+            color: Palette.darkBlue,
+          ),
         ),
+
+        home: Dashboard(),
+        // SplashScreen(),
+
+        //home: const SplashScreen(),
       ),
-
-      home: Dashboard(),
-      // SplashScreen(),
-
-      //home: const SplashScreen(),
     );
   }
 }

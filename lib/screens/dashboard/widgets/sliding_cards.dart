@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 
+import 'package:museumora/screens/virtual_tour/views/screens/floorplan_screen.dart';
+
 class SlidingCardsView extends StatefulWidget {
   @override
   _SlidingCardsViewState createState() => _SlidingCardsViewState();
@@ -148,6 +150,21 @@ class CardContent extends StatelessWidget {
                   ),
                   onPressed: () {},
                 ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.play_circle_outline_rounded,
+                  color: Color(0xFF162A49),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FloorPlanScreen()));
+                },
               ),
               Spacer(),
               Transform.translate(
