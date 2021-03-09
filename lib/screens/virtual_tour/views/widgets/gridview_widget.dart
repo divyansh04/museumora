@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:museumora/screens/virtual_tour/core/floorplan_model.dart';
 import 'package:museumora/screens/virtual_tour/core/models.dart';
 import 'package:museumora/screens/virtual_tour/global.dart';
-import 'package:museumora/screens/virtual_tour/views/screens/room.dart';
 import 'package:provider/provider.dart';
 
 class GridViewWidget extends StatelessWidget {
@@ -45,24 +44,16 @@ class GridViewWidget extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
-                        new InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ViewRoom()));
-                          },
-                          child: new CircleAvatar(
-                            backgroundColor: tileLights[idx].status
-                                ? Colors.greenAccent
-                                : Colors.white,
-                            radius: 5.0,
-                            child: Center(
-                              child: Icon(
-                                Icons.lightbulb_outline,
-                                color: Global.blue,
-                                size: 7,
-                              ),
+                        new CircleAvatar(
+                          backgroundColor: tileLights[idx].status
+                              ? Colors.greenAccent
+                              : Colors.white,
+                          radius: 5.0,
+                          child: Center(
+                            child: Icon(
+                              Icons.lightbulb_outline,
+                              color: Global.blue,
+                              size: 7,
                             ),
                           ),
                         ),
