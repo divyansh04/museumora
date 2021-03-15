@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 
+import 'package:museumora/screens/PaymentCheckout.dart';
+
 class SlidingCardsView extends StatefulWidget {
   @override
   _SlidingCardsViewState createState() => _SlidingCardsViewState();
@@ -146,7 +148,9 @@ class CardContent extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32),
                   ),
-                  onPressed: () {},
+                  onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentCheckout()));
+                  },
                 ),
               ),
               Spacer(),
