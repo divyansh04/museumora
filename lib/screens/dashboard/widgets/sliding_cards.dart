@@ -102,7 +102,7 @@ class SlidingCard extends StatelessWidget {
   }
 }
 
-class CardContent extends StatelessWidget {
+class CardContent extends StatefulWidget {
   final String name;
   final String date;
   final double offset;
@@ -115,6 +115,12 @@ class CardContent extends StatelessWidget {
       : super(key: key);
 
   @override
+  _CardContentState createState() => _CardContentState();
+}
+
+class _CardContentState extends State<CardContent> {
+  bool fav=false;
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -122,14 +128,14 @@ class CardContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Transform.translate(
-            offset: Offset(8 * offset, 0),
-            child: Text(name, style: TextStyle(fontSize: 20)),
+            offset: Offset(8 * widget.offset, 0),
+            child: Text(widget.name, style: TextStyle(fontSize: 20)),
           ),
           SizedBox(height: 8),
           Transform.translate(
-            offset: Offset(32 * offset, 0),
+            offset: Offset(32 * widget.offset, 0),
             child: Text(
-              date,
+              widget.date,
               style: TextStyle(color: Colors.grey),
             ),
           ),
@@ -137,11 +143,11 @@ class CardContent extends StatelessWidget {
           Row(
             children: <Widget>[
               Transform.translate(
-                offset: Offset(48 * offset, 0),
+                offset: Offset(48 * widget.offset, 0),
                 child: RaisedButton(
                   color: Color(0xFF162A49),
                   child: Transform.translate(
-                    offset: Offset(24 * offset, 0),
+                    offset: Offset(24 * widget.offset, 0),
                     child: Text('Reserve'),
                   ),
                   textColor: Colors.white,
@@ -155,7 +161,7 @@ class CardContent extends StatelessWidget {
               ),
               Spacer(),
               Transform.translate(
-                offset: Offset(32 * offset, 0),
+                offset: Offset(32 * widget.offset, 0),
                 child: Text(
                   '0.00 \$',
                   style: TextStyle(
@@ -163,6 +169,15 @@ class CardContent extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
+              ),
+              Spacer(),
+              IconButton(
+                onPressed: (){
+                  setState(() {
+                    fav=!fav;
+                  });
+                },
+                icon:Icon(fav?Icons.favorite:Icons.favorite_outline,color: Colors.red,size: 28,)
               ),
               SizedBox(width: 16),
             ],
