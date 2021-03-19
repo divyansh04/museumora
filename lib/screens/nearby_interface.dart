@@ -67,7 +67,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
 //        print(doc.data.containsKey('contact time'));
         if (doc.data().containsKey('contact time')) {
           DateTime contactTime =
-          (doc.data()['contact time'] as Timestamp).toDate();
+              (doc.data()['contact time'] as Timestamp).toDate();
           // get last contact time
           // if time since contact is greater than threshold than remove the contact
           if (timeNow.difference(contactTime).inDays > threshold) {
@@ -85,22 +85,21 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
       String username;
       bool a = await Nearby().startDiscovery(loggedInUser.email, strategy,
           onEndpointFound: (id, name, serviceId) async {
-            username = await getUsernameOfEmail(email: name);
-            print('I saw id:$id with name:$username');
+        username = await getUsernameOfEmail(email: name);
+        print('I saw id:$id with name:$username');
 
-            var docRef =
-            _firestore.collection('users').doc(loggedInUser.email);
+        var docRef = _firestore.collection('users').doc(loggedInUser.email);
 
-            //  When I discover someone I will see their email and add that email to the database of my contacts
-            //  also get the current time & location and add it to the database
-            docRef.collection('met_with').doc(name).set({
-              'username': username,
-              'contact time': DateTime.now(),
-              'contact location': (await location.getLocation()).toString(),
-            });
-          }, onEndpointLost: (id) {
-            print(id);
-          });
+        //  When I discover someone I will see their email and add that email to the database of my contacts
+        //  also get the current time & location and add it to the database
+        docRef.collection('met_with').doc(name).set({
+          'username': username,
+          'contact time': DateTime.now(),
+          'contact location': (await location.getLocation()).toString(),
+        });
+      }, onEndpointLost: (id) {
+        print(id);
+      });
       print('DISCOVERING: ${a.toString()}');
     } catch (e) {
       print(e);
@@ -172,11 +171,16 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon:Icon(Icons.arrow_back_ios_sharp,
-            color: Colors.black,),
-          onPressed: (){Navigator.pop(context);},
-
+          icon: Icon(
+            Icons.arrow_back_ios_sharp,
+            color: Colors.black,
+            size: 15.0,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
+        elevation: 0,
         centerTitle: true,
         title: Text(
           ' Nearby',

@@ -4,6 +4,9 @@ import 'package:museumora/constants.dart';
 import 'package:museumora/screens/auth/auth_service.dart';
 import 'package:museumora/screens/auth/auth.dart';
 
+import '../../favourites.dart';
+import '../home_page.dart';
+
 class CustomDrawer extends StatefulWidget {
   final Widget child;
 
@@ -32,7 +35,6 @@ class CustomDrawerState extends State<CustomDrawer>
       vsync: this,
       duration: CustomDrawerState.toggleDuration,
     );
-
   }
 
   void close() => _animationController.reverse();
@@ -126,7 +128,9 @@ class CustomDrawerState extends State<CustomDrawer>
     }
   }
 }
-AuthMethods _authMethods=AuthMethods();
+
+AuthMethods _authMethods = AuthMethods();
+
 class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -152,27 +156,43 @@ class MyDrawer extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10.0),
-                      Text(FirebaseAuth.instance.currentUser.displayName!=null?FirebaseAuth.instance.currentUser.displayName:
-                        FirebaseAuth.instance.currentUser.email.split('@')[0].toString(),
+                      Text(
+                        FirebaseAuth.instance.currentUser.displayName != null
+                            ? FirebaseAuth.instance.currentUser.displayName
+                            : FirebaseAuth.instance.currentUser.email
+                                .split('@')[0]
+                                .toString(),
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
                   )),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (_) => CustomDrawer(child: HomePage())));
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.home_filled),
+                      title: Text('Home'),
+                    ),
+                  ),
                   ListTile(
                     leading: Icon(Icons.new_releases),
                     title: Text('News'),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.star),
-                    title: Text('Favourites'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => FavouritesScreen()));
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.star),
+                      title: Text('Favourites'),
+                    ),
                   ),
                   ListTile(
                     leading: Icon(Icons.map),
                     title: Text('Map'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Settings'),
                   ),
                   ListTile(
                     leading: Icon(Icons.person),
@@ -184,7 +204,8 @@ class MyDrawer extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: ListTile(
                   onTap: () {
-                   _authMethods.signOut().whenComplete(() => Navigator.of(context).push(AuthScreen.route) );
+                    _authMethods.signOut().whenComplete(
+                        () => Navigator.of(context).push(AuthScreen.route));
                   },
                   leading: Icon(Icons.logout),
                   title: Text('Logout'),

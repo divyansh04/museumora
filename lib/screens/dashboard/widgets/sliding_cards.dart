@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 
 import 'package:museumora/screens/PaymentCheckout.dart';
+import 'package:museumora/screens/virtual_tour/views/screens/floorplan_screen.dart';
 
 class SlidingCardsView extends StatefulWidget {
   @override
@@ -158,6 +159,21 @@ class _CardContentState extends State<CardContent> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentCheckout()));
                   },
                 ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.play_circle_outline_rounded,
+                  color: Color(0xFF162A49),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FloorPlanScreen()));
+                },
               ),
               Spacer(),
               Transform.translate(
