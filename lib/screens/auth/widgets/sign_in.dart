@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:museumora/screens/auth/auth_service.dart';
+import 'package:museumora/screens/dashboard/dashboard.dart';
 import 'decoration_functions.dart';
 import 'provider_button.dart';
 import 'sign_in_up_bar.dart';
 import 'title.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   const SignIn({
     Key key,
     @required this.onRegisterClicked,
@@ -14,9 +16,18 @@ class SignIn extends StatelessWidget {
   final VoidCallback onRegisterClicked;
 
   @override
+  _SignInState createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  final formKey =GlobalKey<FormState>();
+  AuthMethods _authMethods=AuthMethods();
+  String _email;
+  String _password;
+  bool loading=false;
+  @override
   Widget build(BuildContext context) {
     // final isSubmitting = context.isSubmitting();
-    // #TODO Same a register.dart
     return Form(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -33,28 +44,58 @@ class SignIn extends StatelessWidget {
             ),
             Expanded(
               flex: 4,
-              child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: TextFormField(
-                      decoration: signInInputDecoration(hintText: 'Email'),
+              child: Form(
+                key: formKey,
+                child: ListView(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: TextFormField(
+                        decoration: signInInputDecoration(hintText: 'Email'),
+                        onChanged: (value){
+                          _email =value;
+                        },
+                        // ignore: missing_return
+                        validator:(value) {
+                          if (!(value.contains("@")) && value.isNotEmpty) {
+                            return 'please enter a valid email address';
+                          }
+                          if(value==null || value.isEmpty){
+                            return 'please enter email address';
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: TextFormField(
-                      decoration: signInInputDecoration(hintText: 'Password'),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: TextFormField(
+                        decoration: signInInputDecoration(hintText: 'Password'),
+                        onChanged: (value){
+                          _password =value;
+                        },
+                        // ignore: missing_return
+                        validator:(value) {
+                          if (!(value.length > 5) && value.isNotEmpty) {
+                            return 'Password should contain more than 5 characters';
+                          }
+                          if(value==null || value.isEmpty){
+                            return 'please enter password';
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                  SignInBar(
-                    label: 'Sign in',
-                    isLoading: true, // isSubmitting,
-                    onPressed: () {
-                      // context.signInWithEmailAndPassword();
-                    },
-                  ),
-                ],
+                    SignInBar(
+                      label: 'Sign in',
+                      isLoading: loading, // isSubmitting,
+                      onPressed: () {
+                        // context.signInWithEmailAndPassword();
+                        if(formKey.currentState.validate()){
+                          performLogin();
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
             Expanded(
@@ -85,7 +126,7 @@ class SignIn extends StatelessWidget {
                     InkWell(
                         splashColor: Colors.white,
                         onTap: () {
-                          onRegisterClicked?.call();
+                          widget.onRegisterClicked?.call();
                         },
                         child: RichText(
                           text: const TextSpan(
@@ -109,5 +150,54 @@ class SignIn extends StatelessWidget {
         ),
       ),
     );
+  }
+  void performLogin() async {
+    setState(() {
+      loading=true;
+    });
+    try {
+      UserCredential user = await _authMethods.signIn(_email, _password);
+      setState(() {
+        loading=false;
+      });
+      if (user != null) {
+        authenticateUser(user.user);
+      }
+    }
+    catch(e){
+      print(e);
+      setState(() {
+        loading=false;
+      });
+    }
+  }
+
+  void authenticateUser(User user) {
+    setState(() {
+      loading=true;
+    });
+    _authMethods.authenticateUser(user).then((isNewUser) {
+      if (isNewUser) {
+        _authMethods.addDataToDb(user).then((value) {
+          setState(() {
+            loading=false;
+          });
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+                return Dashboard();
+              }));
+        });
+
+      } else {
+        setState(() {
+          loading=false;
+        });
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
+              return Dashboard();
+            }));
+
+      }
+    });
   }
 }
