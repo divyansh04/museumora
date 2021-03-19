@@ -1,18 +1,24 @@
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:museumora/screens/dashboard/dashboard.dart';
+import 'package:museumora/screens/virtual_tour/views/screens/floorplan_screen.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
 class PaymentCheckout extends StatefulWidget {
+  final String name;
+  final String details;
+  final double amount;
+  final String imageUrl;
+  PaymentCheckout({this.name,this.details,this.amount,this.imageUrl});
   @override
   _PaymentCheckoutState createState() => _PaymentCheckoutState();
 }
 
 class _PaymentCheckoutState extends State<PaymentCheckout> {
   Razorpay _razorPay = Razorpay();
-  double totalAmount=100;
   @override
   void initState() {
     super.initState();
@@ -32,7 +38,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   void openCheckout() async {
     var options = {
       'key': 'rzp_test_cdSYYam2Bf9NRS',
-      'amount': totalAmount*100,
+      'amount': widget.amount*100,
       'name': 'Museumora',
       'description': 'Test payment',
       'prefill': {'contact': '', 'email': ''},
@@ -51,6 +57,113 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   Widget build(BuildContext context) {
     return   Scaffold(
       key: scaffoldKey,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_sharp,
+            color: Colors.black,
+          ),
+          onPressed: (){Navigator.pop(context);},
+        ),
+        centerTitle: true,
+        title: Text(
+          'Details',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+            fontSize: 22,
+          ),
+        ),
+        backgroundColor: Colors.white,
+      ),
+      body:Container(
+          height:MediaQuery.of(context).size.height,
+          width:MediaQuery.of(context).size.width,
+            child: ListView(
+            children:[
+              Container(
+                width:MediaQuery.of(context).size.width,
+                height: 200,
+                child: Carousel(
+                  boxFit: BoxFit.cover,
+                  dotBgColor: Colors.transparent,
+                  images: [
+                    Image.asset(
+                      widget.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                    Image.asset(
+                      widget.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                    Image.asset(
+                      widget.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                    Image.asset(
+                      widget.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                  autoplayDuration: Duration(seconds: 6),
+                  animationCurve: Curves.fastOutSlowIn,
+                  animationDuration: Duration(milliseconds: 1000),
+                  dotSize: 3.0,
+                  dotIncreasedColor: Colors.black,
+                  dotColor: Colors.black,
+                  indicatorBgPadding: 8.0,
+                ),
+              ),
+              SizedBox(height: 15,),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal:14.0,vertical: 2),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex:2,
+                      child: Text(widget.name,style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 25
+                      ),
+                      softWrap: true,),
+                    ),
+                    SizedBox(width: 20,),
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.play_circle_outline_rounded,
+                              color: Color(0xFF162A49),
+                              size: 30
+                            ),
+                            Text('virtual tour',style: TextStyle(fontSize: 10),)
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FloorPlanScreen()));
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal:14.0),
+                child: Text(widget.details,style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15
+                ),
+                  softWrap: true,),
+              ),
+            ]
+          ),
+        ),
       bottomNavigationBar: Container(
         color: Colors.white70,
         child: Padding(
@@ -61,7 +174,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                 flex: 2,
                 child: ListTile(
                   title: Text(
-                    '₹$totalAmount',
+                    '₹${widget.amount}',
                     style: TextStyle(
                         fontSize: 22, fontWeight: FontWeight.w600),
                   ),

@@ -28,7 +28,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
     await getCurrentUser();
 
     _firestore
-        .collection('users')
+        .collection('nearbyUsers')
         .doc(loggedInUser.email)
         .collection('met_with')
         .snapshots()
@@ -58,7 +58,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
     DateTime timeNow = DateTime.now(); //get today's time
 
     _firestore
-        .collection('users')
+        .collection('nearbyUsers')
         .doc(loggedInUser.email)
         .collection('met_with')
         .snapshots()
@@ -169,6 +169,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff181818),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -194,7 +195,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
             flex: 1,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.0),
-              child: ListView.builder(
+              child: (contactTraces.length==0||contactTraces.isEmpty)?Image.asset('assets/images/scanning.gif'):ListView.builder(
                 itemBuilder: (context, index) {
                   return ContactCard(
                     imagePath: 'images/profile1.jpg',

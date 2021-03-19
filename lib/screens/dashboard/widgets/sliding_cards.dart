@@ -94,6 +94,7 @@ class SlidingCard extends StatelessWidget {
                 name: name,
                 date: date,
                 offset: gauss,
+                imageUrl: 'assets/$assetName',
               ),
             ),
           ],
@@ -106,11 +107,13 @@ class SlidingCard extends StatelessWidget {
 class CardContent extends StatefulWidget {
   final String name;
   final String date;
+  final String imageUrl;
   final double offset;
 
   const CardContent(
       {Key key,
       @required this.name,
+        @required this.imageUrl,
       @required this.date,
       @required this.offset})
       : super(key: key);
@@ -156,30 +159,15 @@ class _CardContentState extends State<CardContent> {
                     borderRadius: BorderRadius.circular(32),
                   ),
                   onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentCheckout()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentCheckout(name: widget.name,details: widget.date,amount: 100,imageUrl: widget.imageUrl,)));
                   },
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.play_circle_outline_rounded,
-                  color: Color(0xFF162A49),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FloorPlanScreen()));
-                },
               ),
               Spacer(),
               Transform.translate(
                 offset: Offset(32 * widget.offset, 0),
                 child: Text(
-                  '0.00 \$',
+                  '100.00 \$',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
