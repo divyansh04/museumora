@@ -29,7 +29,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
 
     _firestore
         .collection('users')
-        .doc(loggedInUser.email)
+        .doc(loggedInUser.uid)
         .collection('met_with')
         .snapshots()
         .listen((snapshot) {
@@ -59,7 +59,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
 
     _firestore
         .collection('users')
-        .doc(loggedInUser.email)
+        .doc(loggedInUser.uid)
         .collection('met_with')
         .snapshots()
         .listen((snapshot) {
@@ -82,18 +82,18 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
 
   void discovery() async {
     try {
-      String username;
-      bool a = await Nearby().startDiscovery(loggedInUser.email, strategy,
+      // String username;
+      bool a = await Nearby().startDiscovery(loggedInUser.displayName, strategy,
           onEndpointFound: (id, name, serviceId) async {
-        username = await getUsernameOfEmail(email: name);
-        print('I saw id:$id with name:$username');
+        // username = await getUsernameOfEmail(email: name);
+        print('I saw id:$id with name:$name');
 
-        var docRef = _firestore.collection('users').doc(loggedInUser.email);
+        var docRef = _firestore.collection('users').doc(loggedInUser.uid);
 
         //  When I discover someone I will see their email and add that email to the database of my contacts
         //  also get the current time & location and add it to the database
         docRef.collection('met_with').doc(name).set({
-          'username': username,
+          'username': name,
           'contact time': DateTime.now(),
           'contact location': (await location.getLocation()).toString(),
         });
@@ -125,7 +125,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
 
   Future<void> getCurrentUser() async {
     try {
-      final user = await _auth.currentUser;
+      final user = _auth.currentUser;
       if (user != null) {
         loggedInUser = user;
       }
@@ -138,7 +138,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
     await getCurrentUser();
     try {
       bool a = await Nearby().startAdvertising(
-        loggedInUser.email,
+        loggedInUser.displayName,
         strategy,
         onConnectionInitiated: null,
         onConnectionResult: (id, status) {
@@ -201,8 +201,8 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
               child: ListView.builder(
                 itemBuilder: (context, index) {
                   return ContactCard(
-                    imagePath: 'images/profile1.jpg',
-                    email: contactTraces[index],
+                    imagePath: 'assets/images/google.png',
+                    name: contactTraces[index],
                     infection: 'Not-Infected',
                     contactUsername: contactTraces[index],
                     contactTime: contactTimes[index],
