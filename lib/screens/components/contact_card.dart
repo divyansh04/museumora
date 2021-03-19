@@ -5,14 +5,14 @@ import 'bottom_sheet_text.dart';
 class ContactCard extends StatelessWidget {
   ContactCard(
       {this.imagePath,
-        this.email,
-        this.infection,
-        this.contactUsername,
-        this.contactTime,
-        this.contactLocation});
+      this.name,
+      this.infection,
+      this.contactUsername,
+      this.contactTime,
+      this.contactLocation});
 
   final String imagePath;
-  final String email;
+  final String name;
   final String infection;
   final String contactUsername;
   final DateTime contactTime;
@@ -29,7 +29,7 @@ class ContactCard extends StatelessWidget {
         ),
         trailing: Icon(Icons.more_horiz),
         title: Text(
-          email,
+          name,
           style: TextStyle(
             color: Colors.deepPurple[700],
             fontWeight: FontWeight.bold,
