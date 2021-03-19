@@ -88,8 +88,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
             username = await getUsernameOfEmail(email: name);
             print('I saw id:$id with name:$username');
 
-            var docRef =
-            _firestore.collection('users').doc(loggedInUser.email);
+            var docRef = _firestore.collection('users').doc(loggedInUser.email);
 
             //  When I discover someone I will see their email and add that email to the database of my contacts
             //  also get the current time & location and add it to the database
@@ -126,7 +125,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
 
   Future<void> getCurrentUser() async {
     try {
-      final user = await _auth.currentUser;
+      final user = _auth.currentUser;
       if (user != null) {
         loggedInUser = user;
       }
@@ -172,18 +171,19 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon:Icon(Icons.arrow_back_ios_sharp,
-            color: Colors.black,),
+          icon: Icon(
+            Icons.arrow_back_ios_sharp,
+            color: Colors.black,
+          ),
           onPressed: (){Navigator.pop(context);},
-
         ),
         centerTitle: true,
         title: Text(
-          ' Nearby',
+          'Nearby',
           style: TextStyle(
             color: Colors.black,
-            fontSize: 22,
             fontWeight: FontWeight.w600,
+            fontSize: 22,
           ),
         ),
         backgroundColor: Colors.white,
