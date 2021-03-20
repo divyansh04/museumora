@@ -194,6 +194,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
       ),
       body: Column(
         children: <Widget>[
+          SizedBox(height: 20),
           Expanded(
             flex: 1,
             child: Padding(

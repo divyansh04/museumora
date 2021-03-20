@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:museumora/config/palette.dart';
+// import 'package:museumora/config/palette.dart';
 import 'package:museumora/constants.dart';
-import 'package:museumora/screens/virtual_tour/global.dart';
+// import 'package:museumora/screens/virtual_tour/global.dart';
 
 class OverlayWidget extends StatelessWidget {
   @override

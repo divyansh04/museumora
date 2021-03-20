@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:museumora/screens/virtual_tour/core/models.dart';
-import 'package:museumora/screens/virtual_tour/global.dart';
+// import 'package:museumora/screens/virtual_tour/global.dart';
 import 'package:panorama/panorama.dart';
 
 class ViewRoom extends StatefulWidget {
@@ -27,21 +27,21 @@ class _ViewRoomState extends State<ViewRoom> {
           sensorControl:
               sensorControlled ? SensorControl.Orientation : SensorControl.None,
         ),
-        Positioned(
-          right: 20,
-          bottom: 15,
-          child: FloatingActionButton(
-              backgroundColor: Global.blue,
-              heroTag: 'POI',
-              onPressed: () {},
-              child: Icon(
-                Icons.photo_library_outlined,
-                size: 30,
-              )),
-        )
+        // Positioned(
+        //   right: 20,
+        //   bottom: 15,
+        //   child: FloatingActionButton(
+        //       backgroundColor: Global.blue,
+        //       heroTag: 'POI',
+        //       onPressed: () {},
+        //       child: Icon(
+        //         Icons.photo_library_outlined,
+        //         size: 30,
+        //       )),
+        // )
       ]),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Global.blue,
+        backgroundColor: Colors.black.withOpacity(0.2),
         onPressed: () {
           setState(() {
             sensorControlled = !sensorControlled;
@@ -53,7 +53,7 @@ class _ViewRoomState extends State<ViewRoom> {
           size: 30,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }
