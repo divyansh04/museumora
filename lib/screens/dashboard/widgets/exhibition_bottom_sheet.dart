@@ -82,7 +82,13 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet>
     });
     for (int i = 0; i < shows.docs.length; i++) {
       EventsData.events.add(
-        Event('images/rodion-kutsaev.jpeg', shows.docs[i]['title'],
+        Event(
+            shows.docs[i]['imageKey'] == 1
+                ? 'images/steve-johnson.jpeg'
+                : shows.docs[i]['imageKey'] == 2
+                    ? 'images/efe-kurnaz.jpg'
+                    : 'images/rodion-kutsaev.jpeg',
+            shows.docs[i]['title'],
             shows.docs[i]['date']),
       );
     }
@@ -120,7 +126,17 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet>
               ),
               child: Stack(
                 children: <Widget>[
-                  MenuButton(),
+                  EventsData.events == null || EventsData.events.isEmpty
+                      ? Center(
+                          child: Text(
+                            'No shows booked !',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      : MenuButton(),
                   SheetHeader(
                     fontSize: headerFontSize,
                     topMargin: headerTopMargin,
