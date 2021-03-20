@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:museumora/models/show_data.dart';
 import 'dart:math' as math;
-
 import 'package:museumora/screens/PaymentCheckout.dart';
 import 'package:museumora/screens/virtual_tour/views/screens/floorplan_screen.dart';
 
@@ -13,7 +14,10 @@ class SlidingCardsView extends StatefulWidget {
 class _SlidingCardsViewState extends State<SlidingCardsView> {
   PageController pageController;
   double pageOffset = 0;
-
+  List<ShowData> showsList;
+  QuerySnapshot shows;
+  bool gotData = false;
+  FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   @override
   void initState() {
     super.initState();
@@ -21,6 +25,23 @@ class _SlidingCardsViewState extends State<SlidingCardsView> {
     pageController.addListener(() {
       setState(() => pageOffset = pageController.page);
     });
+    getShows();
+  }
+
+  getShows() async {
+    shows = await _fireStore
+        .collection('shows')
+        .orderBy("imageKey", descending: false)
+        .get();
+    setState(() {
+      gotData = true;
+    });
+    print("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" + "${shows.docs.length}");
+    //  showsList = shows.docs as List<ShowData>;
+    // ShowData.fromJson(shows.docs.;
+    //showsList.forEach((element) {
+    // print('oooooooooooooooooooooooooooo' + element.cityName);
+    //});
   }
 
   @override
@@ -31,42 +52,56 @@ class _SlidingCardsViewState extends State<SlidingCardsView> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.55,
-      child: PageView(
-        controller: pageController,
-        children: <Widget>[
-          SlidingCard(
-            name: 'Shenzhen GLOBAL DESIGN AWARD 2018',
-            date: '4.20-30',
-            assetName: 'images/steve-johnson.jpeg',
-            offset: pageOffset,
-          ),
-          SlidingCard(
-            name: 'Dawan District, Guangdong Hong Kong and Macao',
-            date: '4.28-31',
-            assetName: 'images/rodion-kutsaev.jpeg',
-            offset: pageOffset - 1,
-          ),
-        ],
-      ),
-    );
+    return !gotData
+        ? Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [CircularProgressIndicator(), Text('Loading Data')],
+            ),
+          )
+        : SizedBox(
+            height: MediaQuery.of(context).size.height * 0.55,
+            child: PageView.builder(
+                itemCount: shows.docs.length,
+                controller: pageController,
+                itemBuilder: (BuildContext context, int itemIndex) {
+                  return SlidingCard(
+                      name: shows.docs[itemIndex]['title'],
+                      timings: shows.docs[itemIndex]['timings'],
+                      description: shows.docs[itemIndex]['description'],
+                      assetName: shows.docs[itemIndex]['imageKey'] == 1
+                          ? 'images/steve-johnson.jpeg'
+                          : shows.docs[itemIndex]['imageKey'] == 2
+                              ? 'images/efe-kurnaz.jpg'
+                              : 'images/rodion-kutsaev.jpeg',
+                      offset: pageOffset - itemIndex,
+                      price: shows.docs[itemIndex]['price'],
+                      cityName: shows.docs[itemIndex]['cityName']);
+                }),
+          );
   }
 }
 
 class SlidingCard extends StatelessWidget {
   final String name;
-  final String date;
+  final String description;
   final String assetName;
   final double offset;
+  final String timings;
+  final int price;
+  final String cityName;
 
-  const SlidingCard({
-    Key key,
-    @required this.name,
-    @required this.date,
-    @required this.assetName,
-    @required this.offset,
-  }) : super(key: key);
+  const SlidingCard(
+      {Key key,
+      @required this.name,
+      @required this.description,
+      @required this.assetName,
+      @required this.offset,
+      @required this.price,
+      @required this.timings,
+      this.cityName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +127,11 @@ class SlidingCard extends StatelessWidget {
             Expanded(
               child: CardContent(
                 name: name,
-                date: date,
+                details: description,
                 offset: gauss,
+                price: price,
                 imageUrl: 'assets/$assetName',
+                cityName: cityName,
               ),
             ),
           ],
@@ -106,24 +143,29 @@ class SlidingCard extends StatelessWidget {
 
 class CardContent extends StatefulWidget {
   final String name;
-  final String date;
+  final String details;
   final String imageUrl;
   final double offset;
-
-  const CardContent(
-      {Key key,
-      @required this.name,
-        @required this.imageUrl,
-      @required this.date,
-      @required this.offset})
-      : super(key: key);
+  final String timings;
+  final int price;
+  final String cityName;
+  const CardContent({
+    Key key,
+    this.timings,
+    this.name,
+    this.details,
+    this.imageUrl,
+    this.offset,
+    this.price,
+    this.cityName,
+  }) : super(key: key);
 
   @override
   _CardContentState createState() => _CardContentState();
 }
 
 class _CardContentState extends State<CardContent> {
-  bool fav=false;
+  bool fav = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -139,7 +181,7 @@ class _CardContentState extends State<CardContent> {
           Transform.translate(
             offset: Offset(32 * widget.offset, 0),
             child: Text(
-              widget.date,
+              widget.details,
               style: TextStyle(color: Colors.grey),
             ),
           ),
@@ -158,8 +200,17 @@ class _CardContentState extends State<CardContent> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32),
                   ),
-                  onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentCheckout(name: widget.name,details: widget.date,amount: 100,imageUrl: widget.imageUrl,)));
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PaymentCheckout(
+                                  name: widget.name,
+                                  details: widget.details,
+                                  amount: widget.price.toDouble(),
+                                  imageUrl: widget.imageUrl,
+                                  cityName: widget.cityName,
+                                )));
                   },
                 ),
               ),
@@ -167,7 +218,7 @@ class _CardContentState extends State<CardContent> {
               Transform.translate(
                 offset: Offset(32 * widget.offset, 0),
                 child: Text(
-                  '100.00 \$',
+                  ' ₹ ${widget.price}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -176,13 +227,16 @@ class _CardContentState extends State<CardContent> {
               ),
               Spacer(),
               IconButton(
-                onPressed: (){
-                  setState(() {
-                    fav=!fav;
-                  });
-                },
-                icon:Icon(fav?Icons.favorite:Icons.favorite_outline,color: Colors.red,size: 28,)
-              ),
+                  onPressed: () {
+                    setState(() {
+                      fav = !fav;
+                    });
+                  },
+                  icon: Icon(
+                    fav ? Icons.favorite : Icons.favorite_outline,
+                    color: Colors.red,
+                    size: 28,
+                  )),
               SizedBox(width: 16),
             ],
           )

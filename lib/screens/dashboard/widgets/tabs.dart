@@ -7,9 +7,9 @@ class Tabs extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         SizedBox(width: 10),
-        MyTab(text: 'Nearby', isSelected: false),
-        MyTab(text: 'Recent', isSelected: true),
-        MyTab(text: 'Notice', isSelected: false),
+        // MyTab(text: 'Nearby', isSelected: false),
+        MyTab(text: 'Available Shows', isSelected: true),
+        // MyTab(text: 'Notice', isSelected: false),
       ],
     );
   }

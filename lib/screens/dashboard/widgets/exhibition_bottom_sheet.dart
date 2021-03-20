@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:museumora/constants.dart';
 
@@ -11,6 +13,10 @@ const double iconStartMarginTop = 36;
 const double iconEndMarginTop = 80;
 const double iconsVerticalSpacing = 24;
 const double iconsHorizontalSpacing = 16;
+
+class EventsData {
+  static List<Event> events = [];
+}
 
 class ExhibitionBottomSheet extends StatefulWidget {
   @override
@@ -51,12 +57,42 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet>
       vsync: this,
       duration: Duration(milliseconds: 600),
     );
+    getShows();
   }
 
+  QuerySnapshot shows;
+  bool gotData = false;
+  FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  getShows() async {
+    await getCurrentUser();
+    shows = await _fireStore
+        .collection('users')
+        .doc(currentUser.uid)
+        .collection('bookedShows')
+        .get();
+    print(shows.docs.length);
+    setState(() {
+      gotData = true;
+    });
+    for (int i = 0; i < shows.docs.length; i++) {
+      EventsData.events.add(
+        Event('images/rodion-kutsaev.jpeg', shows.docs[i]['title'],
+            shows.docs[i]['date']),
+      );
+    }
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User currentUser;
+  getCurrentUser() {
+    this.currentUser = _auth.currentUser;
+    print(currentUser.uid);
   }
 
   double lerp(double min, double max) =>
@@ -89,8 +125,8 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet>
                     fontSize: headerFontSize,
                     topMargin: headerTopMargin,
                   ),
-                  for (Event event in events) _buildFullItem(event),
-                  for (Event event in events) _buildIcon(event),
+                  for (Event event in EventsData.events) _buildFullItem(event),
+                  for (Event event in EventsData.events) _buildIcon(event),
                 ],
               ),
             ),
@@ -101,7 +137,7 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet>
   }
 
   Widget _buildIcon(Event event) {
-    int index = events.indexOf(event);
+    int index = EventsData.events.indexOf(event);
     return Positioned(
       height: iconSize,
       width: iconSize,
@@ -122,7 +158,7 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet>
   }
 
   Widget _buildFullItem(Event event) {
-    int index = events.indexOf(event);
+    int index = EventsData.events.indexOf(event);
     return ExpandedEventItem(
       topMargin: iconTopMargin(index),
       leftMargin: iconLeftMargin(index),
@@ -240,15 +276,6 @@ class ExpandedEventItem extends StatelessWidget {
     );
   }
 }
-
-final List<Event> events = [
-  Event('images/steve-johnson.jpeg', 'Shenzhen GLOBAL DESIGN AWARD 2018',
-      '4.20-30'),
-  Event(
-      'images/efe-kurnaz.jpg', 'Shenzhen GLOBAL DESIGN AWARD 2018', '4.20-30'),
-  Event('images/rodion-kutsaev.jpeg', 'Dawan District Guangdong Hong Kong',
-      '4.28-31'),
-];
 
 class Event {
   final String assetName;
