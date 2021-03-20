@@ -7,13 +7,12 @@ import 'package:museumora/screens/auth/auth.dart';
 import 'package:museumora/screens/auth/auth_service.dart';
 import 'package:museumora/screens/dashboard/dashboard.dart';
 import 'package:museumora/screens/virtual_tour/core/floorplan_model.dart';
-import 'package:museumora/services/serviceLocator.dart';
 import 'package:provider/provider.dart';
 
 import 'config/palette.dart';
 import 'screens/splash.dart';
-import 'services/moduleServices/userServices.dart';
-AuthMethods _authMethods=AuthMethods();
+
+AuthMethods _authMethods = AuthMethods();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //Set rotation
@@ -21,14 +20,6 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Firebase.initializeApp();
   // Instantiate Service Locator
-  await servicesSetup();
-  // FirebaseFirestore.instance.settings.persistenceEnabled = true;
-  //check for user currently logged in
-  await use.get<UserService>().getAuthUser();
-  if (use.get<UserService>().getUser() != null &&
-      !use.get<UserService>().hasEmail) {
-    await use.get<UserService>().logoutUser();
-  }
   runApp(MyApp());
 }
 
@@ -53,17 +44,17 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
-      home: FutureBuilder(
-        future: _authMethods.getCurrentUser(),
-        builder: (context, AsyncSnapshot<User> snapshot) {
-          if (snapshot.hasData) {
-            return Dashboard();
-          } else {
-            return  AuthScreen();
-          }
-        },
-      ),
-      // SplashScreen(),
+        home: FutureBuilder(
+          future: _authMethods.getCurrentUser(),
+          builder: (context, AsyncSnapshot<User> snapshot) {
+            if (snapshot.hasData) {
+              return Dashboard();
+            } else {
+              return AuthScreen();
+            }
+          },
+        ),
+        // SplashScreen(),
 
         //home: const SplashScreen(),
       ),
