@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:museumora/constants.dart';
 import 'package:museumora/screens/virtual_tour/core/models.dart';
 // import 'package:museumora/screens/virtual_tour/global.dart';
 import 'package:panorama/panorama.dart';
@@ -18,7 +19,7 @@ class _ViewRoomState extends State<ViewRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: primaryGreen,
           title: Text(widget.room.location.toString())),
       body: Stack(children: [
         Panorama(
