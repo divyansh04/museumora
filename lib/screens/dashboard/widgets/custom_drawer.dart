@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:museumora/constants.dart';
 import 'package:museumora/screens/auth/auth_service.dart';
 import 'package:museumora/screens/auth/auth.dart';
+import 'package:museumora/screens/evacuation.dart';
+import 'package:museumora/screens/nearby_interface.dart';
 
 import '../../favourites.dart';
 import '../home_page.dart';
@@ -176,28 +178,40 @@ class MyDrawer extends StatelessWidget {
                       title: Text('Home'),
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.new_releases),
-                    title: Text('News'),
-                  ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => FavouritesScreen()));
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => Evac()));
                     },
                     child: ListTile(
-                      leading: Icon(Icons.star),
-                      title: Text('Favourites'),
+                      leading: Icon(Icons.warning),
+                      title: Text('Evacuation'),
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.map),
-                    title: Text('Map'),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.of(context).push(MaterialPageRoute(
+                  //         builder: (_) => FavouritesScreen()));
+                  //   },
+                  //   child: ListTile(
+                  //     leading: Icon(Icons.star),
+                  //     title: Text('Favourites'),
+                  //   ),
+                  // ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => NearbyInterface()));
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.connect_without_contact),
+                      title: Text('Nearby'),
+                    ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text('Profile'),
-                  ),
+                  // ListTile(
+                  //   leading: Icon(Icons.person),
+                  //   title: Text('Profile'),
+                  // ),
                 ],
               ),
               Padding(
