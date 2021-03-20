@@ -19,6 +19,9 @@ class PaymentCheckout extends StatefulWidget {
 
 class _PaymentCheckoutState extends State<PaymentCheckout> {
   Razorpay _razorPay = Razorpay();
+  DateTime _dateTime;
+  var timeInterval = ['11-1','3-5','7-9'];
+  String selectedTime='11-1';
   @override
   void initState() {
     super.initState();
@@ -161,6 +164,75 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                 ),
                   softWrap: true,),
               ),
+              Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Text('Date'),
+                        RaisedButton(
+                          child: Text(_dateTime == null ?'Pick a date': _dateTime.toString()),
+                          onPressed: () {
+                            showDatePicker(
+                                context: context,
+                                initialDate: _dateTime == null ? DateTime.now() : _dateTime,
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime(2024)
+                            ).then((date) {
+                              setState(() {
+                                _dateTime = date;
+                              });
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Time Interval'),
+                        RaisedButton(
+                          onPressed: null,
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(selectedTime),
+                              DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  elevation: 0,
+                                  iconEnabledColor:
+                                  Colors.black,
+                                  items: timeInterval.map((String
+                                  dropDownStringItem) {
+                                    return DropdownMenuItem<
+                                        String>(
+                                      value:
+                                      dropDownStringItem,
+                                      child: Text(
+                                          '${dropDownStringItem}'),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String
+                                  timeSelected) {
+                                    setState(() {
+                                      selectedTime=timeSelected;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+
+
             ]
           ),
         ),
