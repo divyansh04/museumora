@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:museumora/models/user.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -15,7 +16,7 @@ class AuthMethods {
   }
 
   Future<User> getCurrentUser() async {
-    this.currentUser = await  _auth.currentUser;
+    this.currentUser = _auth.currentUser;
     return this.currentUser;
   }
 
@@ -23,14 +24,14 @@ class AuthMethods {
     this.currentUser = await getCurrentUser();
 
     DocumentSnapshot documentSnapshot =
-    await _firestore.collection('users').doc(currentUser.uid).get();
+        await _firestore.collection('users').doc(currentUser.uid).get();
     return AppUser.fromMap(documentSnapshot.data());
   }
 
   Future<AppUser> getUserDetailsById(id) async {
     try {
       DocumentSnapshot documentSnapshot =
-      await _firestore.collection('users').doc(id).get();
+          await _firestore.collection('users').doc(id).get();
       return AppUser.fromMap(documentSnapshot.data());
     } catch (e) {
       print(e);
@@ -42,7 +43,7 @@ class AuthMethods {
     try {
       GoogleSignInAccount _signInAccount = await _googleSignIn.signIn();
       GoogleSignInAuthentication _signInAuthentication =
-      await _signInAccount.authentication;
+          await _signInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.getCredential(
           accessToken: _signInAuthentication.accessToken,
@@ -87,7 +88,7 @@ class AuthMethods {
 
   Future<UserCredential> signIn(email, password) async {
     try {
-     UserCredential user = await _auth.signInWithEmailAndPassword(
+      UserCredential user = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       Fluttertoast.showToast(
           msg: 'Signed In Successfully',
@@ -119,7 +120,7 @@ class AuthMethods {
 
   Future<bool> isDoctor(String id) async {
     DocumentSnapshot currentUser =
-    await _firestore.collection('users').doc(id).get();
+        await _firestore.collection('users').doc(id).get();
     //if user is doctor then length of list > 0 or else less than 0
     print(currentUser['userRole']);
     return currentUser['userRole'] == 'doctor' ? true : false;
@@ -134,26 +135,19 @@ class AuthMethods {
       username: username,
     );
 
-    _firestore
-        .collection('users')
-        .doc(currentUser.uid)
-        .set(user.toMap(user));
+    _firestore.collection('users').doc(currentUser.uid).set(user.toMap(user));
   }
-
-
 
   getCurrentUserDetails(String id) async {
     DocumentSnapshot currentUser =
-    await _firestore.collection('users').doc(id).get();
+        await _firestore.collection('users').doc(id).get();
     return currentUser;
   }
-
 
   Future<List<AppUser>> fetchAllUsers(User currentUser) async {
     List<AppUser> userList = List<AppUser>();
 
-    QuerySnapshot querySnapshot =
-    await _firestore.collection('users').get();
+    QuerySnapshot querySnapshot = await _firestore.collection('users').get();
     for (var i = 0; i < querySnapshot.docs.length; i++) {
       if (querySnapshot.docs[i].id != currentUser.uid) {
         userList.add(AppUser.fromMap(querySnapshot.docs[i].data()));
@@ -172,10 +166,11 @@ class AuthMethods {
       return false;
     }
   }
+
   static String getUsername(String email) {
     return "${email.split('@')[0]}";
   }
+
   Stream<DocumentSnapshot> getUserStream({@required String uid}) =>
       _firestore.collection('users').doc(uid).snapshots();
-
 }
