@@ -180,6 +180,7 @@ class _NearbyInterfaceState extends State<NearbyInterface> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_sharp,
+            size: 15,
             color: Colors.black,
           ),
           onPressed: () {
