@@ -83,13 +83,15 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet>
     for (int i = 0; i < shows.docs.length; i++) {
       EventsData.events.add(
         Event(
-            shows.docs[i]['imageKey'] == 1
-                ? 'images/steve-johnson.jpeg'
-                : shows.docs[i]['imageKey'] == 2
-                    ? 'images/efe-kurnaz.jpg'
-                    : 'images/rodion-kutsaev.jpeg',
-            shows.docs[i]['title'],
-            shows.docs[i]['date']),
+          shows.docs[i]['imageKey'] == 1
+              ? 'images/steve-johnson.jpeg'
+              : shows.docs[i]['imageKey'] == 2
+                  ? 'images/efe-kurnaz.jpg'
+                  : 'images/rodion-kutsaev.jpeg',
+          shows.docs[i]['title'],
+          shows.docs[i]['date'],
+          shows.docs[i]['cityName'],
+        ),
       );
     }
   }
@@ -183,6 +185,7 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet>
       borderRadius: itemBorderRadius,
       title: event.title,
       date: event.date,
+      location: event.location,
     );
   }
 
@@ -218,6 +221,7 @@ class ExpandedEventItem extends StatelessWidget {
   final double borderRadius;
   final String title;
   final String date;
+  final String location;
 
   const ExpandedEventItem(
       {Key key,
@@ -227,7 +231,8 @@ class ExpandedEventItem extends StatelessWidget {
       this.borderRadius,
       this.title,
       this.date,
-      this.leftMargin})
+      this.leftMargin,
+      this.location})
       : super(key: key);
 
   @override
@@ -254,6 +259,7 @@ class ExpandedEventItem extends StatelessWidget {
 
   Widget _buildContent() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(title, style: TextStyle(fontSize: 16)),
         SizedBox(height: 8),
@@ -281,9 +287,9 @@ class ExpandedEventItem extends StatelessWidget {
         Spacer(),
         Row(
           children: <Widget>[
-            Icon(Icons.place, color: Colors.grey.shade400, size: 16),
+            Icon(Icons.place, color: Colors.grey.shade400, size: 14),
             Text(
-              'Science Park 10 25A',
+              location,
               style: TextStyle(color: Colors.grey.shade400, fontSize: 13),
             )
           ],
@@ -297,8 +303,9 @@ class Event {
   final String assetName;
   final String title;
   final String date;
+  final String location;
 
-  Event(this.assetName, this.title, this.date);
+  Event(this.assetName, this.title, this.date, this.location);
 }
 
 class SheetHeader extends StatelessWidget {

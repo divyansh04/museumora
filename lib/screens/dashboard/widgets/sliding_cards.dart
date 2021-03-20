@@ -67,17 +67,19 @@ class _SlidingCardsViewState extends State<SlidingCardsView> {
                 controller: pageController,
                 itemBuilder: (BuildContext context, int itemIndex) {
                   return SlidingCard(
-                      name: shows.docs[itemIndex]['title'],
-                      timings: shows.docs[itemIndex]['timings'],
-                      description: shows.docs[itemIndex]['description'],
-                      assetName: shows.docs[itemIndex]['imageKey'] == 1
-                          ? 'images/steve-johnson.jpeg'
-                          : shows.docs[itemIndex]['imageKey'] == 2
-                              ? 'images/efe-kurnaz.jpg'
-                              : 'images/rodion-kutsaev.jpeg',
-                      offset: pageOffset - itemIndex,
-                      price: shows.docs[itemIndex]['price'],
-                      cityName: shows.docs[itemIndex]['cityName']);
+                    name: shows.docs[itemIndex]['title'],
+                    timings: shows.docs[itemIndex]['timings'],
+                    description: shows.docs[itemIndex]['description'],
+                    assetName: shows.docs[itemIndex]['imageKey'] == 1
+                        ? 'images/steve-johnson.jpeg'
+                        : shows.docs[itemIndex]['imageKey'] == 2
+                            ? 'images/efe-kurnaz.jpg'
+                            : 'images/rodion-kutsaev.jpeg',
+                    offset: pageOffset - itemIndex,
+                    price: shows.docs[itemIndex]['price'],
+                    cityName: shows.docs[itemIndex]['cityName'],
+                    imageKey: shows.docs[itemIndex]['imageKey'],
+                  );
                 }),
           );
   }
@@ -91,6 +93,7 @@ class SlidingCard extends StatelessWidget {
   final String timings;
   final int price;
   final String cityName;
+  final int imageKey;
 
   const SlidingCard(
       {Key key,
@@ -100,7 +103,8 @@ class SlidingCard extends StatelessWidget {
       @required this.offset,
       @required this.price,
       @required this.timings,
-      this.cityName})
+      this.cityName,
+      this.imageKey})
       : super(key: key);
 
   @override
@@ -132,6 +136,7 @@ class SlidingCard extends StatelessWidget {
                 price: price,
                 imageUrl: 'assets/$assetName',
                 cityName: cityName,
+                imageKey: imageKey,
               ),
             ),
           ],
@@ -149,6 +154,7 @@ class CardContent extends StatefulWidget {
   final String timings;
   final int price;
   final String cityName;
+  final int imageKey;
   const CardContent({
     Key key,
     this.timings,
@@ -158,6 +164,7 @@ class CardContent extends StatefulWidget {
     this.offset,
     this.price,
     this.cityName,
+    this.imageKey,
   }) : super(key: key);
 
   @override
@@ -210,6 +217,7 @@ class _CardContentState extends State<CardContent> {
                                   amount: widget.price.toDouble(),
                                   imageUrl: widget.imageUrl,
                                   cityName: widget.cityName,
+                                  imageKey: widget.imageKey,
                                 )));
                   },
                 ),

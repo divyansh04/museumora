@@ -15,8 +15,9 @@ class PaymentCheckout extends StatefulWidget {
   final double amount;
   final String imageUrl;
   final String cityName;
+  final int imageKey;
   PaymentCheckout(
-      {this.name, this.details, this.amount, this.imageUrl, this.cityName});
+      {this.name, this.details, this.amount, this.imageUrl, this.cityName, this.imageKey});
   @override
   _PaymentCheckoutState createState() => _PaymentCheckoutState();
 }
@@ -353,6 +354,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
       'title': widget.name,
       'cityName': widget.cityName,
       'date': date.split(' ')[0],
+      'imageKey':widget.imageKey,
     });
   }
 }
